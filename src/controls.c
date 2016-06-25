@@ -5,21 +5,19 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: arnovan- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/05/29 13:43:24 by arnovan-          #+#    #+#             */
-/*   Updated: 2016/06/25 09:14:17 by kchetty          ###   ########.fr       */
+/*   Created: 2016/06/25 13:31:16 by arnovan-          #+#    #+#             */
+/*   Updated: 2016/06/25 14:16:59 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-static void turn(t_glob *g, char dir);
-
-int		quitwin()
+int				quitwin(void)
 {
 	exit(0);
 }
 
-int		key_press(int keycode, t_glob *g)
+int				key_press(int keycode, t_glob *g)
 {
 	if (keycode == KB_ESC)
 		exit(0);
@@ -37,7 +35,7 @@ int		key_press(int keycode, t_glob *g)
 	return (0);
 }
 
-int		key_release(int keycode, t_glob *g)
+int				key_release(int keycode, t_glob *g)
 {
 	if (keycode == KB_LEFT)
 		g->p.left = 0;
@@ -51,49 +49,49 @@ int		key_release(int keycode, t_glob *g)
 	g->env.fd = 0;
 }
 
-void		move(t_glob *g)
+static void		turn(t_glob *g, char dir)
 {
-    if (g->p.up)
-    {
-        if (!(g->env.map[(int)(g->p.posX + g->p.dirX
-                               * g->p.mspeed)][(int)(g->p.posY)]))
-            g->p.posX += g->p.dirX * g->p.mspeed;
-        if (!(g->env.map[(int)(g->p.posX)][(int)(g->p.posY
-                                                       + g->p.dirY * g->p.mspeed)]))
-            g->p.posY += g->p.dirY * g->p.mspeed;
-    }
-    if (g->p.left)
-        turn(g, 'L');
-    if (g->p.right)
-        turn(g, 'R');
-    if (g->p.down)
-    {
-        if (!(g->env.map[(int)(g->p.posX - g->p.dirX
-                               * g->p.mspeed)][(int)(g->p.posY)]))
-            g->p.posX -= g->p.dirX * g->p.mspeed;
-        if (!(g->env.map[(int)(g->p.posX)][(int)(g->p.posY
-                                                       - g->p.dirY * g->p.mspeed)]))
-            g->p.posY -= g->p.dirY * g->p.mspeed;
-    }
+	double	tmpdir;
+	double	tmpplane;
+	int		coef;
+
+	coef = 1;
+	tmpdir = g->p.dir_x;
+	tmpplane = g->ray.plane_x;
+	if (dir == '1')
+		coef = -1;
+	g->p.dir_x = g->p.dir_x * cos(coef * g->p.r_speed)
+	- g->p.dir_y * sin(coef * g->p.r_speed);
+	g->p.dir_y = tmpdir * sin(coef * g->p.r_speed)
+	+ g->p.dir_y * cos(coef * g->p.r_speed);
+	g->ray.plane_x = g->ray.plane_x * cos(coef * g->p.r_speed)
+	- g->ray.plane_y * sin(coef * g->p.r_speed);
+	g->ray.plane_y = tmpplane * sin(coef * g->p.r_speed)
+	+ g->ray.plane_y * cos(coef * g->p.r_speed);
 }
 
-static void	turn(t_glob *g, char dir)
+void			move(t_glob *g)
 {
-    double	tmpdir;
-    double	tmpplane;
-    int		coef;
-    
-    coef = 1;
-    tmpdir = g->p.dirX;
-    tmpplane = g->ray.planeX;
-    if (dir == 'R')
-        coef = -1;
-    g->p.dirX = g->p.dirX * cos(coef * g->p.rspeed)
-    - g->p.dirY * sin(coef * g->p.rspeed);
-    g->p.dirY = tmpdir * sin(coef * g->p.rspeed)
-    + g->p.dirY * cos(coef * g->p.rspeed);
-    g->ray.planeX = g->ray.planeX * cos(coef * g->p.rspeed)
-    - g->ray.planeY * sin(coef * g->p.rspeed);
-    g->ray.planeY = tmpplane * sin(coef * g->p.rspeed)
-    + g->ray.planeY * cos(coef * g->p.rspeed);
+	if (g->p.up)
+	{
+		if (!(g->env.map[(int)(g->p.pos_x + g->p.dir_x
+								* g->p.m_speed)][(int)(g->p.pos_y)]))
+			g->p.pos_x += g->p.dir_x * g->p.m_speed;
+		if (!(g->env.map[(int)(g->p.pos_x)][(int)(g->p.pos_y
+												+ g->p.dir_y * g->p.m_speed)]))
+			g->p.pos_y += g->p.dir_y * g->p.m_speed;
+	}
+	if (g->p.left)
+		turn(g, '0');
+	if (g->p.right)
+		turn(g, '1');
+	if (g->p.down)
+	{
+		if (!(g->env.map[(int)(g->p.pos_x - g->p.dir_x
+							* g->p.m_speed)][(int)(g->p.pos_y)]))
+			g->p.pos_x -= g->p.dir_x * g->p.m_speed;
+		if (!(g->env.map[(int)(g->p.pos_x)][(int)(g->p.pos_y
+												- g->p.dir_y * g->p.m_speed)]))
+			g->p.pos_y -= g->p.dir_y * g->p.m_speed;
+	}
 }

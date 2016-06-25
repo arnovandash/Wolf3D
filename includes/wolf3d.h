@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: arnovan- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/06/22 06:35:30 by arnovan-          #+#    #+#             */
-/*   Updated: 2016/06/25 10:26:18 by kchetty          ###   ########.fr       */
+/*   Created: 2016/06/25 13:05:25 by arnovan-          #+#    #+#             */
+/*   Updated: 2016/06/25 15:33:00 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 
 # include <math.h>
 
-# define WIN_W 1280
-# define WIN_H 720
+# define WIN_W 640
+# define WIN_H 480
 
 # define KB_ESC 53
 # define KB_UP 126
@@ -32,45 +32,52 @@
 # define KB_LEFT 123
 # define KB_RIGHT 124
 
-//# define RED	0xFF0000
-//# define GREEN	0x00FF00
-//# define BLUE	0x0000FF
+# define RED1		0x00FF0000
+# define RED2		0x00550000
+# define GREEN1		0x0000FF00
+# define GREEN2		0x00005500
+# define BLUE1		0x000000FF
+# define BLUE2		0x00000055
+# define YELLOW1	0x00FFFF00
+# define YELLOW2	0x00555500
+# define PURPLE1	0x00BF3EFF
+# define PURPLE2	0x00551A8B
 
 typedef struct	s_raycaster
 {
-	double		planeX;
-	double		planeY;
-	double		cameraX;
-	double		rayPosX;
-	double		rayPosY;
-	double		rayDirX;
-	double		sideDistX;
-	double		deltaDistX;
-	double		deltaDistY;
-	double		perpWallDist;
-	double		sideDistY;
-	int			drawStart;
-	int			drawEnd;
-	double		rayDirY;
+	double		plane_x;
+	double		plane_y;
+	double		camera_x;
+	double		ray_pos_x;
+	double		ray_pos_y;
+	double		ray_dir_x;
+	double		ray_dir_y;
+	double		side_dist_x;
+	double		side_dist_y;
+	double		delta_dist_x;
+	double		delta_dist_y;
+	double		perp_wall_dist;
+	int			draw_start;
+	int			draw_end;
 	int			detect_wall;
 	int			side;
-	int			lineHeight;
+	int			line_height;
 }				t_raycaster;
 
 typedef struct	s_player
 {
-	double		posX;
-	double		posY;
-	double		dirX;
-	double		dirY;
-	int			stepX;
-	int			stepY;
-	double		rspeed;
-	double		mspeed;
-	int			mapX;
-	int			mapY;
-	double		hcamera;
-	int			wallside;
+	double		pos_x;
+	double		pos_y;
+	double		dir_x;
+	double		dir_y;
+	int			step_x;
+	int			step_y;
+	double		r_speed;
+	double		m_speed;
+	int			map_x;
+	int			map_y;
+	double		h_camera;
+	int			wall_side;
 	int			left;
 	int			right;
 	int			up;
@@ -86,7 +93,7 @@ typedef struct	s_map
 	int		j;
 }				t_map;
 
-typedef struct s_env
+typedef struct	s_env
 {
 	void	*mlx;
 	void	*win;
@@ -94,10 +101,15 @@ typedef struct s_env
 	int		ey;
 	void	*img;
 	int		**map;
+	char	*data;
 	int		fd;
+	int		bpp;
+	int		color;
+	int		size_line;
+	int		endian;
 }				t_env;
 
-typedef struct s_glob
+typedef struct	s_glob
 {
 	t_env		env;
 	t_map		map;
@@ -105,13 +117,13 @@ typedef struct s_glob
 	t_raycaster ray;
 }				t_glob;
 
-void	ft_error(int err);
+void			ft_error(int err);
 
-int		ft_esc(int keycode);
-int		quitwin();
-int		key_press(int keycode, t_glob *g);
-int		key_release(int keycode, t_glob *g);
-void	get_map(t_glob *g, char *file);
-int		loops_hook(t_glob *g);
-void	move(t_glob *g);
+int				ft_esc(int keycode);
+int				quitwin();
+int				key_press(int keycode, t_glob *g);
+int				key_release(int keycode, t_glob *g);
+void			get_map(t_glob *g, char *file);
+int				loops_hook(t_glob *g);
+void			move(t_glob *g);
 #endif
