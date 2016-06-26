@@ -6,7 +6,7 @@
 /*   By: arnovan- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/25 13:05:25 by arnovan-          #+#    #+#             */
-/*   Updated: 2016/06/26 11:12:09 by arnovan-         ###   ########.fr       */
+/*   Updated: 2016/06/26 14:35:54 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ typedef struct	s_env
 	char	*data;
 	int		fd;
 	int		bpp;
-	unsigned int		color;
 	int		size_line;
 	int		endian;
 }				t_env;
@@ -118,7 +117,9 @@ typedef struct	s_glob
 }				t_glob;
 
 void			ft_error(int err);
-
+void			loop_calc_3(t_glob *g);
+void			loop_calc_2(t_glob *g);
+void			loop_calc_1(t_glob *g, float *x);
 int				ft_esc(int keycode);
 int				quitwin();
 int				key_press(int keycode, t_glob *g);

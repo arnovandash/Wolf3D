@@ -6,7 +6,7 @@
 /*   By: arnovan- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/25 13:18:20 by arnovan-          #+#    #+#             */
-/*   Updated: 2016/06/26 11:14:03 by arnovan-         ###   ########.fr       */
+/*   Updated: 2016/06/26 14:19:07 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,69 +80,4 @@ void		loop_calc_1(t_glob *g, float *x)
 	g->ray.delta_dist_y = sqrt(1 + (g->ray.ray_dir_x * g->ray.ray_dir_x) /
 			(g->ray.ray_dir_y * g->ray.ray_dir_y));
 	g->ray.detect_wall = 0;
-}
-
-int			loops_hook(t_glob *g)
-{
-	float		x;
-
-	x = 0;
-	while(x < WIN_W)
-	{
-		loop_calc_1(g, &x);
-		loop_calc_2(g);
-		while (g->ray.detect_wall == 0)
-		{
-			loop_calc_3(g);
-			if (g->ray.draw_start < 0)
-				g->ray.draw_start = 0;
-			g->ray.draw_end = g->ray.line_height / 2 + WIN_H / 2;
-			if (g->ray.draw_end >= WIN_H)
-				g->ray.draw_end = WIN_H - 1;
-		}
-
-		int y = g->ray.draw_start;
-		while (y <= g->ray.draw_end)
-		{
-			if (g->ray.side == 1)
-			{
-				if (g->env.map[g->p.map_x][g->p.map_y] == 1)
-					g->env.color = mlx_get_color_value(g->env.mlx, RED1);
-		g->env.data[((int)x * 5) + (y * g->env.size_line)] = g->env.color;
-				if (g->env.map[g->p.map_x][g->p.map_y] == 2)
-		g->env.data[((int)x * 6) + (y * g->env.size_line)] = g->env.color;
-					g->env.color = GREEN1;
-				if (g->env.map[g->p.map_x][g->p.map_y] == 3)
-					g->env.color = mlx_get_color_value(g->env.mlx, BLUE1);
-				if (g->env.map[g->p.map_x][g->p.map_y] == 4)
-					g->env.color = mlx_get_color_value(g->env.mlx, BLUE1);
-				if (g->env.map[g->p.map_x][g->p.map_y] == 5)
-					g->env.color = mlx_get_color_value(g->env.mlx, BLUE1);
-			}
-			if (g->ray.side == 0)
-		{
-			if (g->env.map[g->p.map_x][g->p.map_y] == 1)
-					g->env.color = mlx_get_color_value(g->env.mlx, BLUE2);
-				if (g->env.map[g->p.map_x][g->p.map_y] == 2)
-					g->env.color = mlx_get_color_value(g->env.mlx, BLUE2);
-				if (g->env.map[g->p.map_x][g->p.map_y] == 3)
-				g->env.color = mlx_get_color_value(g->env.mlx, BLUE2);
-				if (g->env.map[g->p.map_x][g->p.map_y] == 4)
-				g->env.color = mlx_get_color_value(g->env.mlx, BLUE2);
-				if (g->env.map[g->p.map_x][g->p.map_y] == 5)
-				g->env.color = mlx_get_color_value(g->env.mlx, BLUE2);
-			}
-			
-//		g->env.data[((int)x * 5) + (y * g->env.size_line)] = g->env.color;
-
-//		g->env.data[((int)x * 5) + (y * g->env.size_line)] =  mlx_get_color_value(g->env.mlx, RED1);
-
-//		g->env.data[((int)x * 6) + (y * g->env.size_line)] =  mlx_get_color_value(g->env.mlx, YELLOW1);
-
-			y++;
-		}
-		x += 0.5;
-	}
-
-	return (0);
 }

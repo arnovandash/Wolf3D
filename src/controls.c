@@ -6,7 +6,7 @@
 /*   By: arnovan- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/25 13:31:16 by arnovan-          #+#    #+#             */
-/*   Updated: 2016/06/26 10:57:47 by arnovan-         ###   ########.fr       */
+/*   Updated: 2016/06/26 11:56:36 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,8 @@ int				key_press(int keycode, t_glob *g)
 	g->env.img = mlx_new_image(g->env.mlx, WIN_W, WIN_H);
 	g->env.data = mlx_get_data_addr(g->env.img, &g->env.bpp, &g->env.size_line,
 			&g->env.endian);
-
-			g->env.endian = 0;
 	loops_hook(g);
-
-
 	mlx_put_image_to_window(g->env.mlx, g->env.win, g->env.img, 0, 0);
-
-//	mlx_clear_window(g->env.mlx, g->env.win);
 	return (0);
 }
 
