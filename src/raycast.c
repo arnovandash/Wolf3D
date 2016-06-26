@@ -6,7 +6,7 @@
 /*   By: arnovan- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/25 13:18:20 by arnovan-          #+#    #+#             */
-/*   Updated: 2016/06/25 15:56:46 by arnovan-         ###   ########.fr       */
+/*   Updated: 2016/06/26 11:14:03 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,73 +107,42 @@ int			loops_hook(t_glob *g)
 			if (g->ray.side == 1)
 			{
 				if (g->env.map[g->p.map_x][g->p.map_y] == 1)
-					g->env.color = RED1;
+					g->env.color = mlx_get_color_value(g->env.mlx, RED1);
+		g->env.data[((int)x * 5) + (y * g->env.size_line)] = g->env.color;
 				if (g->env.map[g->p.map_x][g->p.map_y] == 2)
+		g->env.data[((int)x * 6) + (y * g->env.size_line)] = g->env.color;
 					g->env.color = GREEN1;
 				if (g->env.map[g->p.map_x][g->p.map_y] == 3)
-					g->env.color = BLUE1;
+					g->env.color = mlx_get_color_value(g->env.mlx, BLUE1);
 				if (g->env.map[g->p.map_x][g->p.map_y] == 4)
-					g->env.color = PURPLE1;
+					g->env.color = mlx_get_color_value(g->env.mlx, BLUE1);
 				if (g->env.map[g->p.map_x][g->p.map_y] == 5)
-					g->env.color = YELLOW1;
+					g->env.color = mlx_get_color_value(g->env.mlx, BLUE1);
 			}
-
 			if (g->ray.side == 0)
-			{
-				if (g->env.map[g->p.map_x][g->p.map_y] == 1)
-					g->env.color = RED2;
+		{
+			if (g->env.map[g->p.map_x][g->p.map_y] == 1)
+					g->env.color = mlx_get_color_value(g->env.mlx, BLUE2);
 				if (g->env.map[g->p.map_x][g->p.map_y] == 2)
-					g->env.color = GREEN2;
+					g->env.color = mlx_get_color_value(g->env.mlx, BLUE2);
 				if (g->env.map[g->p.map_x][g->p.map_y] == 3)
-					g->env.color = BLUE2;
+				g->env.color = mlx_get_color_value(g->env.mlx, BLUE2);
 				if (g->env.map[g->p.map_x][g->p.map_y] == 4)
-					g->env.color = PURPLE2;
+				g->env.color = mlx_get_color_value(g->env.mlx, BLUE2);
 				if (g->env.map[g->p.map_x][g->p.map_y] == 5)
-					g->env.color = YELLOW2;
+				g->env.color = mlx_get_color_value(g->env.mlx, BLUE2);
 			}
+			
+//		g->env.data[((int)x * 5) + (y * g->env.size_line)] = g->env.color;
 
-			printf("the poo %c \n", g->env.data[y]);
-		memcpy(&g->env.data[(int)x * 4 + y * g->env.size_line], 
-									&g->env.color, sizeof(int));
+//		g->env.data[((int)x * 5) + (y * g->env.size_line)] =  mlx_get_color_value(g->env.mlx, RED1);
 
-
-/*
- *{
-				if (g->env.map[g->p.map_x][g->p.map_y] == 1)
-					mlx_pixel_put(g->env.mlx, g->env.win, x, y, RED1);
-				if (g->env.map[g->p.map_x][g->p.map_y] == 2)
-					mlx_pixel_put(g->env.mlx, g->env.win, x, y, GREEN1);
-				if (g->env.map[g->p.map_x][g->p.map_y] == 3)
-					mlx_pixel_put(g->env.mlx, g->env.win, x, y, BLUE1);
-				if (g->env.map[g->p.map_x][g->p.map_y] == 4)
-					mlx_pixel_put(g->env.mlx, g->env.win, x, y, PURPLE1);
-				if (g->env.map[g->p.map_x][g->p.map_y] == 5)
-					mlx_pixel_put(g->env.mlx, g->env.win, x, y, YELLOW1);
-			}
-
-			if (g->ray.side == 0)
-			{
-				if (g->env.map[g->p.map_x][g->p.map_y] == 1)
-					mlx_pixel_put(g->env.mlx, g->env.win, x, y, RED2);
-				if (g->env.map[g->p.map_x][g->p.map_y] == 2)
-					mlx_pixel_put(g->env.mlx, g->env.win, x, y, GREEN2);
-				if (g->env.map[g->p.map_x][g->p.map_y] == 3)
-					mlx_pixel_put(g->env.mlx, g->env.win, x, y, BLUE2);
-				if (g->env.map[g->p.map_x][g->p.map_y] == 4)
-					mlx_pixel_put(g->env.mlx, g->env.win, x, y, PURPLE2);
-				if (g->env.map[g->p.map_x][g->p.map_y] == 5)
-					mlx_pixel_put(g->env.mlx, g->env.win, x, y, YELLOW2);
-			}
-
-
-*/
-
+//		g->env.data[((int)x * 6) + (y * g->env.size_line)] =  mlx_get_color_value(g->env.mlx, YELLOW1);
 
 			y++;
 		}
 		x += 0.5;
 	}
-	mlx_put_image_to_window(g->env.mlx, g->env.win, g->env.img, 0, 0);
-//	mlx_destroy_image(g->env.mlx, g->env.img);
+
 	return (0);
 }

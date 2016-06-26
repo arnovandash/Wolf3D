@@ -6,7 +6,7 @@
 /*   By: arnovan- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/25 13:05:25 by arnovan-          #+#    #+#             */
-/*   Updated: 2016/06/25 15:33:00 by arnovan-         ###   ########.fr       */
+/*   Updated: 2016/06/26 11:12:09 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 
 # include <math.h>
 
-# define WIN_W 640
-# define WIN_H 480
+# define WIN_W 1920
+# define WIN_H 1080
 
 # define KB_ESC 53
 # define KB_UP 126
@@ -32,16 +32,16 @@
 # define KB_LEFT 123
 # define KB_RIGHT 124
 
-# define RED1		0x00FF0000
-# define RED2		0x00550000
-# define GREEN1		0x0000FF00
-# define GREEN2		0x00005500
-# define BLUE1		0x000000FF
-# define BLUE2		0x00000055
-# define YELLOW1	0x00FFFF00
-# define YELLOW2	0x00555500
-# define PURPLE1	0x00BF3EFF
-# define PURPLE2	0x00551A8B
+# define RED1		0xFF0000
+# define RED2		0x550000
+# define GREEN1		0x00FF00
+# define GREEN2		0x005500
+# define BLUE1		0x0000FF
+# define BLUE2		0x000055
+# define YELLOW1	0xFFFF00
+# define YELLOW2	0x555500
+# define PURPLE1	0xBF3EFF
+# define PURPLE2	0x551A8B
 
 typedef struct	s_raycaster
 {
@@ -104,7 +104,7 @@ typedef struct	s_env
 	char	*data;
 	int		fd;
 	int		bpp;
-	int		color;
+	unsigned int		color;
 	int		size_line;
 	int		endian;
 }				t_env;

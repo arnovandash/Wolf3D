@@ -6,7 +6,7 @@
 /*   By: arnovan- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/25 13:31:16 by arnovan-          #+#    #+#             */
-/*   Updated: 2016/06/25 14:16:59 by arnovan-         ###   ########.fr       */
+/*   Updated: 2016/06/26 10:57:47 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,17 @@ int				key_press(int keycode, t_glob *g)
 	if (keycode == KB_DOWN)
 		g->p.down = 1;
 	move(g);
+	g->env.img = mlx_new_image(g->env.mlx, WIN_W, WIN_H);
+	g->env.data = mlx_get_data_addr(g->env.img, &g->env.bpp, &g->env.size_line,
+			&g->env.endian);
+
+			g->env.endian = 0;
 	loops_hook(g);
-	mlx_clear_window(g->env.mlx, g->env.win);
+
+
+	mlx_put_image_to_window(g->env.mlx, g->env.win, g->env.img, 0, 0);
+
+//	mlx_clear_window(g->env.mlx, g->env.win);
 	return (0);
 }
 
@@ -61,13 +70,13 @@ static void		turn(t_glob *g, char dir)
 	if (dir == '1')
 		coef = -1;
 	g->p.dir_x = g->p.dir_x * cos(coef * g->p.r_speed)
-	- g->p.dir_y * sin(coef * g->p.r_speed);
+		- g->p.dir_y * sin(coef * g->p.r_speed);
 	g->p.dir_y = tmpdir * sin(coef * g->p.r_speed)
-	+ g->p.dir_y * cos(coef * g->p.r_speed);
+		+ g->p.dir_y * cos(coef * g->p.r_speed);
 	g->ray.plane_x = g->ray.plane_x * cos(coef * g->p.r_speed)
-	- g->ray.plane_y * sin(coef * g->p.r_speed);
+		- g->ray.plane_y * sin(coef * g->p.r_speed);
 	g->ray.plane_y = tmpplane * sin(coef * g->p.r_speed)
-	+ g->ray.plane_y * cos(coef * g->p.r_speed);
+		+ g->ray.plane_y * cos(coef * g->p.r_speed);
 }
 
 void			move(t_glob *g)
@@ -75,10 +84,10 @@ void			move(t_glob *g)
 	if (g->p.up)
 	{
 		if (!(g->env.map[(int)(g->p.pos_x + g->p.dir_x
-								* g->p.m_speed)][(int)(g->p.pos_y)]))
+						* g->p.m_speed)][(int)(g->p.pos_y)]))
 			g->p.pos_x += g->p.dir_x * g->p.m_speed;
 		if (!(g->env.map[(int)(g->p.pos_x)][(int)(g->p.pos_y
-												+ g->p.dir_y * g->p.m_speed)]))
+						+ g->p.dir_y * g->p.m_speed)]))
 			g->p.pos_y += g->p.dir_y * g->p.m_speed;
 	}
 	if (g->p.left)
@@ -88,10 +97,10 @@ void			move(t_glob *g)
 	if (g->p.down)
 	{
 		if (!(g->env.map[(int)(g->p.pos_x - g->p.dir_x
-							* g->p.m_speed)][(int)(g->p.pos_y)]))
+						* g->p.m_speed)][(int)(g->p.pos_y)]))
 			g->p.pos_x -= g->p.dir_x * g->p.m_speed;
 		if (!(g->env.map[(int)(g->p.pos_x)][(int)(g->p.pos_y
-												- g->p.dir_y * g->p.m_speed)]))
+						- g->p.dir_y * g->p.m_speed)]))
 			g->p.pos_y -= g->p.dir_y * g->p.m_speed;
 	}
 }
