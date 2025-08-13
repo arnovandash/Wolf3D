@@ -12,8 +12,15 @@
 
 #include "wolf3d.h"
 #include <getopt.h>
+#include <stdlib.h>
 
-void		handle_events(t_glob *g, int *running)
+/**
+ * @brief This function handles all SDL events.
+ * 
+ * @param g The global state object.
+ * @param running A pointer to the running flag.
+ */
+void	handle_events(t_glob *g, int *running)
 {
 	SDL_Event event;
 
@@ -32,6 +39,13 @@ void		handle_events(t_glob *g, int *running)
 	}
 }
 
+/**
+ * @brief This function parses the command line arguments.
+ * 
+ * @param argc The number of arguments.
+ * @param argv The arguments.
+ * @param env The environment object.
+ */
 void	parse_args(int argc, char **argv, t_env *env)
 {
 	int opt;
@@ -50,10 +64,10 @@ void	parse_args(int argc, char **argv, t_env *env)
 		switch (opt)
 		{
 			case 'w':
-				env->win_w = ft_atoi(optarg);
+				env->win_w = atoi(optarg);
 				break;
 			case 'h':
-				env->win_h = ft_atoi(optarg);
+				env->win_h = atoi(optarg);
 				break;
 			case 'v':
 				env->vsync = 1;
@@ -62,6 +76,13 @@ void	parse_args(int argc, char **argv, t_env *env)
 	}
 }
 
+/**
+ * @brief The main function.
+ * 
+ * @param argc The number of arguments.
+ * @param argv The arguments.
+ * @return int The exit code.
+ */
 int		main(int argc, char **argv)
 {
 	t_glob		g;
@@ -108,6 +129,6 @@ int		main(int argc, char **argv)
 		free(g.env.map);
 	}
 	else
-		ft_error(2);
+		error(2);
 	return (0);
 }

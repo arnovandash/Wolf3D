@@ -20,10 +20,6 @@ SDL_FLAGS=-L/opt/homebrew/lib -lSDL2
 
 RM=rm -f
 
-INC_LIBFT= -L. -lft
-
-FCLEAN_LIB=make -C libft/ fclean
-
 PATH_SRC= ./src/
 
 SRC = main.c get_map.c controls.c \
@@ -37,8 +33,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@echo "Compiling binaries..."
-	@make re -C libft/	
-	@$(CC) -o $(NAME) $(OBJ) -lm $(INC_LIBFT) $(SDL_FLAGS)
+	@$(CC) -o $(NAME) $(OBJ) -lm $(SDL_FLAGS)
 	@echo "Compilation was successful!"
 
 %.o: $(PATH_SRC)%.c
@@ -47,8 +42,6 @@ $(NAME): $(OBJ)
 clean:
 	@echo "Cleaning object files..."
 	@$(RM) $(OBJ)
-	@echo "Cleaning libft object files..."
-	@make -C libft/ clean
 	@echo "Done cleaning!"
 
 fclean: clean

@@ -11,21 +11,30 @@
 /* ************************************************************************** */
 
 #include "wolf3d.h"
+#include <stdio.h>
 
-void	ft_error(int err)
+/**
+ * @brief Prints an error message and exits the program.
+ * 
+ * @param err The error code.
+ * 		1: Malloc error
+ * 		2: Invalid map file or usage
+ * 		3: Error opening file
+ */
+void	error(int err)
 {
 	if (err == 1)
 	{
-		ft_putstr("Encountered a malloc error\n");
+		printf("Encountered a malloc error\n");
 	}
 	if (err == 2)
 	{
-		ft_putstr("Invalid map file\n");
-		ft_putstr("Usage ./wolf3d map.txt\n");
+		printf("Invalid map file\n");
+		printf("Usage ./wolf3d map.txt\n");
 	}
 	if (err == 3)
 	{
-		ft_putstr("Error opening file\n");
+		printf("Error opening file\n");
 	}
 	exit(1);
 }

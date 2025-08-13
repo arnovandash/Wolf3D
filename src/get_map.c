@@ -11,59 +11,67 @@
 /* ************************************************************************** */
 
 #include "wolf3d.h"
+#include <stdlib.h>
+#include <stdio.h>
 
-void	check_size(t_glob *g, char *file)
+/**
+ * @brief This function reads the map file and stores it in a 2D array.
+ * 
+ * @param g The global state object.
+ * @param file The name of the map file.
+ */
+void	get_map(t_glob *g, char *file)
 {
-	int	fd;
+	FILE	*fp;
+	char	buf[1024];
+	int		fd;
+	int		max_x = 0;
 
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
-		ft_error(3);
+		error(3);
+	fp = fdopen(fd, "r");
+	if (fp == NULL)
+		error(3);
+
+	// First pass to get the dimensions of the map
 	g->game.map.y = 0;
-	while (get_next_line(fd, &g->game.map.buf))
+	while (fgets(buf, sizeof(buf), fp))
 	{
 		g->game.map.x = 0;
-		while (*(g->game.map.buf) != '\0')
+		for (int i = 0; buf[i]; i++)
 		{
-			if ((*(g->game.map.buf) >= '0') && (*(g->game.map.buf) <= '9'))
+			if (buf[i] >= '0' && buf[i] <= '9')
 				g->game.map.x++;
-			g->game.map.buf++;
+		}
+		if (g->game.map.x > max_x)
+			max_x = g->game.map.x;
+		g->game.map.y++;
+	}
+	g->game.map.x = max_x;
+
+	// Allocate memory for the map
+	g->env.map = (int **)malloc(sizeof(int *) * g->game.map.y);
+	for (int i = 0; i < g->game.map.y; i++)
+		g->env.map[i] = (int *)malloc(sizeof(int) * g->game.map.x);
+	if (g->env.map == NULL)
+		error(1);
+
+	// Second pass to read the map data
+	rewind(fp);
+	g->game.map.y = 0;
+	while (fgets(buf, sizeof(buf), fp))
+	{
+		g->game.map.x = 0;
+		for (int i = 0; buf[i]; i++)
+		{
+			if (buf[i] >= '0' && buf[i] <= '9')
+			{
+				g->env.map[g->game.map.y][g->game.map.x] = buf[i] - '0';
+				g->game.map.x++;
+			}
 		}
 		g->game.map.y++;
 	}
-	
-	g->env.map = (int **)malloc(sizeof(int *) * g->game.map.y);
-	while (++g->game.map.i <= g->game.map.x)
-		g->env.map[g->game.map.i] = (int *)malloc(sizeof(int) * g->game.map.x);
-	if (g->env.map == NULL)
-		ft_error(1);
-	close(fd);
-}
-
-void	get_map(t_glob *g, char *file)
-{
-	char	*str;
-
-	str = NULL;
-	g->game.map.i = -1;
-	g->env.fd = open(file, O_RDONLY);
-	check_size(g, file);
-	str = (char *)malloc(sizeof(char));
-	g->game.map.y = 0;
-	while (get_next_line(g->env.fd, &g->game.map.buf))
-	{
-		g->game.map.x = 0;
-		while (*(g->game.map.buf) != '\0')
-		{
-			if ((*(g->game.map.buf) >= '0') && (*(g->game.map.buf) <= '9'))
-			{
-				str[0] = *(g->game.map.buf);
-				g->env.map[g->game.map.y][g->game.map.x] = ft_atoi(str);
-				g->game.map.x += 1;
-			}
-			g->game.map.buf++;
-		}
-		g->game.map.y += 1;
-	}
-	close(g->env.fd);
+	fclose(fp);
 }

@@ -14,38 +14,21 @@
 # define WOLF3D_H
 
 # include <SDL2/SDL.h>
-# include "../libft/includes/libft.h"
-# include "../libft/includes/get_next_line.h"
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <string.h>
-
 # include <math.h>
 
 # define WIN_W 1920
 # define WIN_H 1080
 
-# define KB_ESC 53
-# define KB_UP 126
-# define KB_DOWN 125
-# define KB_LEFT 123
-# define KB_RIGHT 124
-
-# define RED1		0xFF0000
-# define RED2		0x550000
-# define GREEN1		0x00FF00
-# define GREEN2		0x005500
-# define BLUE1		0x0000FF
-# define BLUE2		0x000055
-# define YELLOW1	0xFFFF00
-# define YELLOW2	0x555500
-# define PURPLE1	0xBF3EFF
-# define PURPLE2	0x551A8B
-
 # define COLOR_FLOOR 0x8B4513
 # define COLOR_CEILING 0x87CEEB
 
+/**
+ * @brief This struct holds all the variables related to the raycasting engine.
+ */
 typedef struct	s_raycaster
 {
 	double		plane_x;
@@ -67,6 +50,9 @@ typedef struct	s_raycaster
 	int			line_height;
 }				t_raycaster;
 
+/**
+ * @brief This struct holds all the variables related to the player.
+ */
 typedef struct	s_player
 {
 	double		pos_x;
@@ -87,6 +73,9 @@ typedef struct	s_player
 	int			down;
 }				t_player;
 
+/**
+ * @brief This struct holds all the variables related to the map.
+ */
 typedef struct	s_map
 {
 	int		x;
@@ -96,6 +85,9 @@ typedef struct	s_map
 	int		j;
 }				t_map;
 
+/**
+ * @brief This struct holds all the variables related to the environment.
+ */
 typedef struct	s_env
 {
 	SDL_Window	*win;
@@ -112,6 +104,9 @@ typedef struct	s_env
 	int		endian;
 }				t_env;
 
+/**
+ * @brief This struct holds all the variables related to the game state.
+ */
 typedef struct s_game
 {
 	t_player	p;
@@ -119,18 +114,19 @@ typedef struct s_game
 	t_raycaster	ray;
 }				t_game;
 
-
+/**
+ * @brief This struct holds all the global variables.
+ */
 typedef struct	s_glob
 {
 	t_env		env;
 	t_game		game;
 }				t_glob;
 
-void			ft_error(int err);
+void			error(int err);
 void			loop_calc_3(t_glob *g);
 void			loop_calc_2(t_glob *g);
 void			loop_calc_1(t_glob *g, float *x);
-int				ft_esc(int keycode);
 int				quitwin();
 int				key_press(int keycode, t_glob *g);
 int				key_release(int keycode, t_glob *g);

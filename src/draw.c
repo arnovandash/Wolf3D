@@ -20,28 +20,15 @@ static void	draw_pixel(t_glob *g, int x, int y, int color)
 
 static int	get_wall_color(t_glob *g)
 {
-	if (g->game.ray.side == 1)
-	{
-		if (g->env.map[g->game.p.map_x][g->game.p.map_y] == 1)
-			return (0xFFE65764);
-		if (g->env.map[g->game.p.map_x][g->game.p.map_y] == 2)
-			return (0xFFB96414);
-		if (g->env.map[g->game.p.map_x][g->game.p.map_y] == 3)
-			return (0xFF50873C);
-		if (g->env.map[g->game.p.map_x][g->game.p.map_y] == 4)
-			return (0xFFCDFA0A);
-	}
-	else
-	{
-		if (g->env.map[g->game.p.map_x][g->game.p.map_y] == 1)
-			return (0xFFDC2D2D);
-		if (g->env.map[g->game.p.map_x][g->game.p.map_y] == 2)
-			return (0xFFDC78DC);
-		if (g->env.map[g->game.p.map_x][g->game.p.map_y] == 3)
-			return (0xFF9B8764);
-		if (g->env.map[g->game.p.map_x][g->game.p.map_y] == 4)
-			return (0xFF82C81E);
-	}
+	static const int colors[2][4] = {
+		{0xFFDC2D2D, 0xFFDC78DC, 0xFF9B8764, 0xFF82C81E},
+		{0xFFE65764, 0xFFB96414, 0xFF50873C, 0xFFCDFA0A}
+	};
+	int map_value;
+
+	map_value = g->env.map[g->game.p.map_x][g->game.p.map_y];
+	if (map_value > 0 && map_value <= 4)
+		return (colors[g->game.ray.side][map_value - 1]);
 	return (0);
 }
 
