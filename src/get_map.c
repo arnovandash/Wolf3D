@@ -31,8 +31,7 @@ void	check_size(t_glob *g, char *file)
 		}
 		g->map.y++;
 	}
-	g->env.ex = g->map.x;
-	g->env.ey = g->map.y;
+	
 	g->env.map = (int **)malloc(sizeof(int *) * g->map.y);
 	while (++g->map.i <= g->map.x)
 		g->env.map[g->map.i] = (int *)malloc(sizeof(int) * g->map.x);

@@ -14,11 +14,9 @@ NAME=wolf3d
 
 CC=gcc
 
-CFLAGS=-Wall -Wextra -Werror -g
+CFLAGS=-Wall -Wextra -Werror -g -I/opt/homebrew/include -D_THREAD_SAFE -I includes/
 
-LINUX=-I/usr/X11/include -L/usr/X11/lib -lX11 -lXext -lmlx
-
-MAC=-L/usr/lib -lmlx -framework OpenGL -framework AppKit
+SDL_FLAGS=-L/opt/homebrew/lib -lSDL2
 
 RM=rm -f
 
@@ -28,28 +26,23 @@ FCLEAN_LIB=make -C libft/ fclean
 
 PATH_SRC= ./src/
 
-PATH_HD= -I includes/
+SRC = main.c get_map.c controls.c \
+		errors.c raycast.c draw.c
 
-SRC = $(PATH_SRC)main.c $(PATH_SRC)get_map.c $(PATH_SRC)controls.c \
-	  $(PATH_SRC)errors.c $(PATH_SRC)raycast.c $(PATH_SRC)draw.c
+OBJ = $(SRC:.c=.o)
 
-OBJ = main.o get_map.o controls.o errors.o raycast.o draw.o
-
-$(NAME):
-	@echo "Compiling binaries..."
-	@make re -C libft/	
-	@$(CC) $(CFLAGS) $(PATH_HD) -c $(SRC)
-	@$(CC) -o $(NAME) $(OBJ) -lm $(INC_LIBFT) $(MAC)
-	@echo "Compilation was successful!"
+.PHONY: all clean fclean re
 
 all: $(NAME)
 
-x11:
+$(NAME): $(OBJ)
 	@echo "Compiling binaries..."
 	@make re -C libft/	
-	@$(CC) $(CFLAGS) $(PATH_HD) -c $(SRC)
-	@$(CC) -o $(NAME) $(OBJ) -lm $(INC_LIBFT) $(LINUX)
+	@$(CC) -o $(NAME) $(OBJ) -lm $(INC_LIBFT) $(SDL_FLAGS)
 	@echo "Compilation was successful!"
+
+%.o: $(PATH_SRC)%.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	@echo "Cleaning object files..."
@@ -58,11 +51,7 @@ clean:
 	@make -C libft/ clean
 	@echo "Done cleaning!"
 
-fclean:
-	@echo "Cleaning object files..."
-	@$(RM) $(OBJ)
-	@echo "Cleaning libft object & binary files..."
-	@make -C libft/ fclean
+fclean: clean
 	@echo "Cleaning binaries..."
 	@$(RM) $(NAME)
 	@echo "Done cleaning!"

@@ -19,37 +19,28 @@ int				quitwin(void)
 
 int				key_press(int keycode, t_glob *g)
 {
-	if (keycode == KB_ESC)
-		exit(0);
-	if (keycode == KB_LEFT)
+	if (keycode == SDLK_LEFT || keycode == SDLK_a)
 		g->p.left = 1;
-	if (keycode == KB_RIGHT)
+	if (keycode == SDLK_RIGHT || keycode == SDLK_d)
 		g->p.right = 1;
-	if (keycode == KB_UP)
+	if (keycode == SDLK_UP || keycode == SDLK_w)
 		g->p.up = 1;
-	if (keycode == KB_DOWN)
+	if (keycode == SDLK_DOWN || keycode == SDLK_s)
 		g->p.down = 1;
-	move(g);
-	g->env.img = mlx_new_image(g->env.mlx, WIN_W, WIN_H);
-	g->env.data = mlx_get_data_addr(g->env.img, &g->env.bpp, &g->env.size_line,
-			&g->env.endian);
-	loops_hook(g);
-	mlx_put_image_to_window(g->env.mlx, g->env.win, g->env.img, 0, 0);
 	return (0);
 }
 
 int				key_release(int keycode, t_glob *g)
 {
-	if (keycode == KB_LEFT)
+	if (keycode == SDLK_LEFT || keycode == SDLK_a)
 		g->p.left = 0;
-	if (keycode == KB_RIGHT)
+	if (keycode == SDLK_RIGHT || keycode == SDLK_d)
 		g->p.right = 0;
-	if (keycode == KB_UP)
+	if (keycode == SDLK_UP || keycode == SDLK_w)
 		g->p.up = 0;
-	if (keycode == KB_DOWN)
+	if (keycode == SDLK_DOWN || keycode == SDLK_s)
 		g->p.down = 0;
 	return (0);
-	g->env.fd = 0;
 }
 
 static void		turn(t_glob *g, char dir)

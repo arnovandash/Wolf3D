@@ -13,7 +13,7 @@
 #ifndef WOLF3D_H
 # define WOLF3D_H
 
-# include "mlx.h"
+# include <SDL2/SDL.h>
 # include "../libft/includes/libft.h"
 # include "../libft/includes/get_next_line.h"
 # include <fcntl.h>
@@ -95,13 +95,11 @@ typedef struct	s_map
 
 typedef struct	s_env
 {
-	void	*mlx;
-	void	*win;
-	int		ex;
-	int		ey;
-	void	*img;
+	SDL_Window	*win;
+	SDL_Renderer *ren;
+	SDL_Texture *tex;
+	uint32_t	*pixels;
 	int		**map;
-	char	*data;
 	int		fd;
 	int		bpp;
 	int		size_line;

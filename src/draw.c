@@ -12,60 +12,40 @@
 
 #include <wolf3d.h>
 
+void		draw_pixel(t_glob *g, int x, int y, int color)
+{
+	if (x >= 0 && x < WIN_W && y >= 0 && y < WIN_H)
+		g->env.pixels[y * WIN_W + x] = color;
+}
+
 void		set_color_west_east(t_glob *g, int x, int y)
 {
+	int color;
+
 	if (g->env.map[g->p.map_x][g->p.map_y] == 1)
-	{
-		g->env.data[((int)x * 4) + (y * g->env.size_line) + 2] = 100;
-		g->env.data[((int)x * 4) + (y * g->env.size_line) + 1] = 87;
-		g->env.data[((int)x * 4) + (y * g->env.size_line)] = 230;
-	}
+		color = 0xFFE65764;
 	if (g->env.map[g->p.map_x][g->p.map_y] == 2)
-	{
-		g->env.data[((int)x * 4) + (y * g->env.size_line) + 2] = 20;
-		g->env.data[((int)x * 4) + (y * g->env.size_line) + 1] = 100;
-		g->env.data[((int)x * 4) + (y * g->env.size_line)] = 185;
-	}
+		color = 0xFFB96414;
 	if (g->env.map[g->p.map_x][g->p.map_y] == 3)
-	{
-		g->env.data[((int)x * 4) + (y * g->env.size_line) + 2] = 60;
-		g->env.data[((int)x * 4) + (y * g->env.size_line) + 1] = 135;
-		g->env.data[((int)x * 4) + (y * g->env.size_line)] = 80;
-	}
+		color = 0xFF50873C;
 	if (g->env.map[g->p.map_x][g->p.map_y] == 4)
-	{
-		g->env.data[((int)x * 4) + (y * g->env.size_line) + 2] = 10;
-		g->env.data[((int)x * 4) + (y * g->env.size_line) + 1] = 250;
-		g->env.data[((int)x * 4) + (y * g->env.size_line)] = 205;
-	}
+		color = 0xFFCDFA0A;
+	draw_pixel(g, x, y, color);
 }
 
 void		set_color_north_south(t_glob *g, int x, int y)
 {
+	int color;
+
 	if (g->env.map[g->p.map_x][g->p.map_y] == 1)
-	{
-		g->env.data[((int)x * 4) + (y * g->env.size_line) + 2] = 60;
-		g->env.data[((int)x * 4) + (y * g->env.size_line) + 1] = 45;
-		g->env.data[((int)x * 4) + (y * g->env.size_line)] = 220;
-	}
+		color = 0xFFDC2D2D;
 	if (g->env.map[g->p.map_x][g->p.map_y] == 2)
-	{
-		g->env.data[((int)x * 4) + (y * g->env.size_line) + 2] = 100;
-		g->env.data[((int)x * 4) + (y * g->env.size_line) + 1] = 160;
-		g->env.data[((int)x * 4) + (y * g->env.size_line)] = 220;
-	}
+		color = 0xFFDC78DC;
 	if (g->env.map[g->p.map_x][g->p.map_y] == 3)
-	{
-		g->env.data[((int)x * 4) + (y * g->env.size_line) + 2] = 100;
-		g->env.data[((int)x * 4) + (y * g->env.size_line) + 1] = 235;
-		g->env.data[((int)x * 4) + (y * g->env.size_line)] = 155;
-	}
+		color = 0xFF9B8764;
 	if (g->env.map[g->p.map_x][g->p.map_y] == 4)
-	{
-		g->env.data[((int)x * 4) + (y * g->env.size_line) + 2] = 30;
-		g->env.data[((int)x * 4) + (y * g->env.size_line) + 1] = 200;
-		g->env.data[((int)x * 4) + (y * g->env.size_line)] = 130;
-	}
+		color = 0xFF82C81E;
+	draw_pixel(g, x, y, color);
 }
 
 int			loops_hook(t_glob *g)
@@ -74,6 +54,7 @@ int			loops_hook(t_glob *g)
 	int			y;
 
 	x = 0;
+	ft_memset(g->env.pixels, 0, WIN_W * WIN_H * sizeof(uint32_t));
 	while (x < WIN_W)
 	{
 		loop_calc_1(g, &x);
