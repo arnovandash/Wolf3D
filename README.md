@@ -19,7 +19,7 @@ eg.
 *   `--height <height>`: Set the window height (default: 1080).
 *   `--vsync`: Enable VSync.
 
-## Screenshot
+## Screenshots
 
 ![Screenshot1](./images/image01.png)
 ![Screenshot2](./images/image02.png)
@@ -28,3 +28,14 @@ eg.
 ## Reference
 
 <https://lodev.org/cgtutor/raycasting.html>
+
+## Wishlist / TODO
+
+* Complete refactor
+* Textures & Skybox
+* Improved collision detection
+* Sprites and animations
+* 1Bit Graphics mode
+* Dithered fog
+* Anti-aliasing
+* Map editor
