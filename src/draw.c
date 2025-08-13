@@ -49,14 +49,16 @@ static void	draw_background(t_glob *g)
 {
 	int x;
 	int y;
+	int half_h;
 
+	half_h = g->env.win_h / 2;
 	y = 0;
 	while (y < g->env.win_h)
 	{
 		x = 0;
 		while (x < g->env.win_w)
 		{
-			if (y < g->env.win_h / 2)
+			if (y < half_h)
 				draw_pixel(g, x, y, COLOR_CEILING);
 			else
 				draw_pixel(g, x, y, COLOR_FLOOR);
@@ -71,7 +73,9 @@ void		render(t_glob *g)
 	float		x;
 	int		y;
 	int		color;
+	int		half_h;
 
+	half_h = g->env.win_h / 2;
 	draw_background(g);
 	x = 0;
 	while (x < g->env.win_w)
@@ -83,7 +87,7 @@ void		render(t_glob *g)
 			loop_calc_3(g);
 		}
 		g->game.ray.draw_start < 0 ? g->game.ray.draw_start = 0 : 0;
-		g->game.ray.draw_end = g->game.ray.line_height / 2 + g->env.win_h / 2;
+		g->game.ray.draw_end = g->game.ray.line_height / 2 + half_h;
 		g->game.ray.draw_end >= g->env.win_h ? g->game.ray.draw_end = g->env.win_h - 1 : 0;
 		color = get_wall_color(g);
 		y = g->game.ray.draw_start;

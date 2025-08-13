@@ -14,6 +14,9 @@
 
 void		loop_calc_3(t_glob *g)
 {
+	int half_h;
+
+	half_h = g->env.win_h / 2;
 	if (g->game.ray.side_dist_x < g->game.ray.side_dist_y)
 	{
 		g->game.ray.side_dist_x += g->game.ray.delta_dist_x;
@@ -35,7 +38,7 @@ void		loop_calc_3(t_glob *g)
 		g->game.ray.perp_wall_dist = (g->game.p.map_y - g->game.ray.ray_pos_y +
 				(1 - g->game.p.step_y) / 2) / g->game.ray.ray_dir_y;
 	g->game.ray.line_height = (int)(g->env.win_h / g->game.ray.perp_wall_dist);
-	g->game.ray.draw_start = -g->game.ray.line_height / 2 + g->env.win_h / 2;
+	g->game.ray.draw_start = -g->game.ray.line_height / 2 + half_h;
 }
 
 void		loop_calc_2(t_glob *g)

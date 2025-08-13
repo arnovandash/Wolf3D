@@ -14,7 +14,7 @@ NAME=wolf3d
 
 CC=gcc
 
-CFLAGS=-Wall -Wextra -Werror -g -I/opt/homebrew/include -D_THREAD_SAFE -I includes/
+CFLAGS=-Wall -Wextra -Werror -g -O3 -I/opt/homebrew/include -D_THREAD_SAFE -I includes/
 
 SDL_FLAGS=-L/opt/homebrew/lib -lSDL2
 
@@ -37,7 +37,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@echo "Compiling binaries..."
-	@make re -C libft/ 	
+	@make re -C libft/	
 	@$(CC) -o $(NAME) $(OBJ) -lm $(INC_LIBFT) $(SDL_FLAGS)
 	@echo "Compilation was successful!"
 
