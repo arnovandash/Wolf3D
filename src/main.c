@@ -47,6 +47,10 @@ int		main(int argc, char **argv)
 		g.ray.plane_y = 0.60;
 		g.p.m_speed = 0.1;
 		g.p.r_speed = 0.1;
+		g.p.up = 0;
+		g.p.down = 0;
+		g.p.left = 0;
+		g.p.right = 0;
 		SDL_Init(SDL_INIT_VIDEO);
 		g.env.win = SDL_CreateWindow("Wolf3D", SDL_WINDOWPOS_UNDEFINED,
 				SDL_WINDOWPOS_UNDEFINED, WIN_W, WIN_H, SDL_WINDOW_SHOWN);
