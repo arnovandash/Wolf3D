@@ -104,6 +104,8 @@ int		main(int argc, char **argv)
 		g.game.p.down = 0;
 		g.game.p.left = 0;
 		g.game.p.right = 0;
+		g.game.p.strafe_left = 0;
+		g.game.p.strafe_right = 0;
 		SDL_Init(SDL_INIT_VIDEO);
 		g.env.win = SDL_CreateWindow("Wolf3D", SDL_WINDOWPOS_UNDEFINED,
 				SDL_WINDOWPOS_UNDEFINED, g.env.win_w, g.env.win_h, SDL_WINDOW_SHOWN);

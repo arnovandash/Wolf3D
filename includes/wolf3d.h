@@ -71,6 +71,8 @@ typedef struct	s_player
 	int			right;
 	int			up;
 	int			down;
+	int			strafe_left;
+	int			strafe_right;
 }				t_player;
 
 /**

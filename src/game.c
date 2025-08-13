@@ -12,6 +12,29 @@
 
 #include "game.h"
 
+#define PLAYER_SIZE 0.2
+
+/**
+ * @brief This function checks if there is a wall at the given coordinates.
+ * 
+ * @param g The global state object.
+ * @param x The x coordinate to check.
+ * @param y The y coordinate to check.
+ * @return int 1 if there is a wall, 0 otherwise.
+ */
+static int	is_wall(t_glob *g, double x, double y)
+{
+	if (x < 0 || x >= g->game.map.x || y < 0 || y >= g->game.map.y)
+		return (1);
+	return (g->env.map[(int)x][(int)y] > 0);
+}
+
+/**
+ * @brief This function turns the player left or right.
+ * 
+ * @param g The global state object.
+ * @param dir The direction to turn ('0' for left, '1' for right).
+ */
 static void	turn(t_glob *g, char dir)
 {
 	double	tmpdir;
@@ -33,28 +56,46 @@ static void	turn(t_glob *g, char dir)
 		+ g->game.ray.plane_y * cos(coef * g->game.p.r_speed);
 }
 
+/**
+ * @brief This function moves the player.
+ * 
+ * @param g The global state object.
+ */
 void		move(t_glob *g)
 {
-	if (g->game.p.up)
+	double move_x;
+	double move_y;
+
+	move_x = 0;
+	move_y = 0;
+	if (g->game.p.up) // Move forward (W)
 	{
-		if (!(g->env.map[(int)(g->game.p.pos_x + g->game.p.dir_x
-						* g->game.p.m_speed)][(int)(g->game.p.pos_y)]))
-			g->game.p.pos_x += g->game.p.dir_x * g->game.p.m_speed;
-		if (!(g->env.map[(int)(g->game.p.pos_x)][(int)(g->game.p.pos_y
-						+ g->game.p.dir_y * g->game.p.m_speed)]))
-			g->game.p.pos_y += g->game.p.dir_y * g->game.p.m_speed;
+		move_x += g->game.p.dir_x * g->game.p.m_speed;
+		move_y += g->game.p.dir_y * g->game.p.m_speed;
 	}
-	if (g->game.p.left)
+	if (g->game.p.down) // Move backward (S)
+	{
+		move_x -= g->game.p.dir_x * g->game.p.m_speed;
+		move_y -= g->game.p.dir_y * g->game.p.m_speed;
+	}
+	if (g->game.p.strafe_left) // Strafe left (A)
+	{
+		move_x -= g->game.p.dir_y * g->game.p.m_speed;
+		move_y += g->game.p.dir_x * g->game.p.m_speed;
+	}
+	if (g->game.p.strafe_right) // Strafe right (D)
+	{
+		move_x += g->game.p.dir_y * g->game.p.m_speed;
+		move_y -= g->game.p.dir_x * g->game.p.m_speed;
+	}
+
+	if (!is_wall(g, g->game.p.pos_x + move_x, g->game.p.pos_y))
+		g->game.p.pos_x += move_x;
+	if (!is_wall(g, g->game.p.pos_x, g->game.p.pos_y + move_y))
+		g->game.p.pos_y += move_y;
+
+	if (g->game.p.left) // Turn left (Q)
 		turn(g, '0');
-	if (g->game.p.right)
+	if (g->game.p.right) // Turn right (E)
 		turn(g, '1');
-	if (g->game.p.down)
-	{
-		if (!(g->env.map[(int)(g->game.p.pos_x - g->game.p.dir_x
-						* g->game.p.m_speed)][(int)(g->game.p.pos_y)]))
-			g->game.p.pos_x -= g->game.p.dir_x * g->game.p.m_speed;
-		if (!(g->env.map[(int)(g->game.p.pos_x)][(int)(g->game.p.pos_y
-						- g->game.p.dir_y * g->game.p.m_speed)]))
-			g->game.p.pos_y -= g->game.p.dir_y * g->game.p.m_speed;
-	}
 }
