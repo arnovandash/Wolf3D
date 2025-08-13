@@ -89,10 +89,13 @@ void		move(t_glob *g)
 		move_y -= g->game.p.dir_x * g->game.p.m_speed;
 	}
 
-	if (!is_wall(g, g->game.p.pos_x + move_x, g->game.p.pos_y))
-		g->game.p.pos_x += move_x;
-	if (!is_wall(g, g->game.p.pos_x, g->game.p.pos_y + move_y))
-		g->game.p.pos_y += move_y;
+	if (is_wall(g, g->game.p.pos_x + move_x + (move_x > 0 ? PLAYER_SIZE : -PLAYER_SIZE), g->game.p.pos_y))
+		move_x = 0;
+	if (is_wall(g, g->game.p.pos_x, g->game.p.pos_y + move_y + (move_y > 0 ? PLAYER_SIZE : -PLAYER_SIZE)))
+		move_y = 0;
+
+	g->game.p.pos_x += move_x;
+	g->game.p.pos_y += move_y;
 
 	if (g->game.p.left) // Turn left (Q)
 		turn(g, '0');
