@@ -27,7 +27,7 @@ FCLEAN_LIB=make -C libft/ fclean
 PATH_SRC= ./src/
 
 SRC = main.c get_map.c controls.c \
-		errors.c raycast.c draw.c
+	  errors.c raycast.c draw.c game.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -37,7 +37,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@echo "Compiling binaries..."
-	@make re -C libft/	
+	@make re -C libft/ 	
 	@$(CC) -o $(NAME) $(OBJ) -lm $(INC_LIBFT) $(SDL_FLAGS)
 	@echo "Compilation was successful!"
 

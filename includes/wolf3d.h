@@ -43,6 +43,9 @@
 # define PURPLE1	0xBF3EFF
 # define PURPLE2	0x551A8B
 
+# define COLOR_FLOOR 0x8B4513
+# define COLOR_CEILING 0x87CEEB
+
 typedef struct	s_raycaster
 {
 	double		plane_x;
@@ -109,12 +112,18 @@ typedef struct	s_env
 	int		endian;
 }				t_env;
 
+typedef struct s_game
+{
+	t_player	p;
+	t_map		map;
+	t_raycaster	ray;
+}				t_game;
+
+
 typedef struct	s_glob
 {
 	t_env		env;
-	t_map		map;
-	t_player	p;
-	t_raycaster ray;
+	t_game		game;
 }				t_glob;
 
 void			ft_error(int err);
@@ -126,6 +135,6 @@ int				quitwin();
 int				key_press(int keycode, t_glob *g);
 int				key_release(int keycode, t_glob *g);
 void			get_map(t_glob *g, char *file);
-int				loops_hook(t_glob *g);
+void			render(t_glob *g);
 void			move(t_glob *g);
 #endif

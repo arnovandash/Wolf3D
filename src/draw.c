@@ -12,68 +12,86 @@
 
 #include <wolf3d.h>
 
-void		draw_pixel(t_glob *g, int x, int y, int color)
+static void	draw_pixel(t_glob *g, int x, int y, int color)
 {
 	if (x >= 0 && x < g->env.win_w && y >= 0 && y < g->env.win_h)
 		g->env.pixels[y * g->env.win_w + x] = color;
 }
 
-void		set_color_west_east(t_glob *g, int x, int y)
+static int	get_wall_color(t_glob *g)
 {
-	int color;
-
-	if (g->env.map[g->p.map_x][g->p.map_y] == 1)
-		color = 0xFFE65764;
-	if (g->env.map[g->p.map_x][g->p.map_y] == 2)
-		color = 0xFFB96414;
-	if (g->env.map[g->p.map_x][g->p.map_y] == 3)
-		color = 0xFF50873C;
-	if (g->env.map[g->p.map_x][g->p.map_y] == 4)
-		color = 0xFFCDFA0A;
-	draw_pixel(g, x, y, color);
+	if (g->game.ray.side == 1)
+	{
+		if (g->env.map[g->game.p.map_x][g->game.p.map_y] == 1)
+			return (0xFFE65764);
+		if (g->env.map[g->game.p.map_x][g->game.p.map_y] == 2)
+			return (0xFFB96414);
+		if (g->env.map[g->game.p.map_x][g->game.p.map_y] == 3)
+			return (0xFF50873C);
+		if (g->env.map[g->game.p.map_x][g->game.p.map_y] == 4)
+			return (0xFFCDFA0A);
+	}
+	else
+	{
+		if (g->env.map[g->game.p.map_x][g->game.p.map_y] == 1)
+			return (0xFFDC2D2D);
+		if (g->env.map[g->game.p.map_x][g->game.p.map_y] == 2)
+			return (0xFFDC78DC);
+		if (g->env.map[g->game.p.map_x][g->game.p.map_y] == 3)
+			return (0xFF9B8764);
+		if (g->env.map[g->game.p.map_x][g->game.p.map_y] == 4)
+			return (0xFF82C81E);
+	}
+	return (0);
 }
 
-void		set_color_north_south(t_glob *g, int x, int y)
+static void	draw_background(t_glob *g)
 {
-	int color;
+	int x;
+	int y;
 
-	if (g->env.map[g->p.map_x][g->p.map_y] == 1)
-		color = 0xFFDC2D2D;
-	if (g->env.map[g->p.map_x][g->p.map_y] == 2)
-		color = 0xFFDC78DC;
-	if (g->env.map[g->p.map_x][g->p.map_y] == 3)
-		color = 0xFF9B8764;
-	if (g->env.map[g->p.map_x][g->p.map_y] == 4)
-		color = 0xFF82C81E;
-	draw_pixel(g, x, y, color);
+	y = 0;
+	while (y < g->env.win_h)
+	{
+		x = 0;
+		while (x < g->env.win_w)
+		{
+			if (y < g->env.win_h / 2)
+				draw_pixel(g, x, y, COLOR_CEILING);
+			else
+				draw_pixel(g, x, y, COLOR_FLOOR);
+			x++;
+		}
+		y++;
+	}
 }
 
-int			loops_hook(t_glob *g)
+void		render(t_glob *g)
 {
 	float		x;
-	int			y;
+	int		y;
+	int		color;
 
+	draw_background(g);
 	x = 0;
-	ft_memset(g->env.pixels, 0, g->env.win_w * g->env.win_h * sizeof(uint32_t));
 	while (x < g->env.win_w)
 	{
 		loop_calc_1(g, &x);
 		loop_calc_2(g);
-		while (g->ray.detect_wall == 0)
+		while (g->game.ray.detect_wall == 0)
 		{
 			loop_calc_3(g);
-			g->ray.draw_start < 0 ? g->ray.draw_start = 0 : 0;
-			g->ray.draw_end = g->ray.line_height / 2 + g->env.win_h / 2;
-			g->ray.draw_end >= g->env.win_h ? g->ray.draw_end = g->env.win_h - 1 : 0;
 		}
-		y = g->ray.draw_start;
-		while (y <= g->ray.draw_end)
+		g->game.ray.draw_start < 0 ? g->game.ray.draw_start = 0 : 0;
+		g->game.ray.draw_end = g->game.ray.line_height / 2 + g->env.win_h / 2;
+		g->game.ray.draw_end >= g->env.win_h ? g->game.ray.draw_end = g->env.win_h - 1 : 0;
+		color = get_wall_color(g);
+		y = g->game.ray.draw_start;
+		while (y <= g->game.ray.draw_end)
 		{
-			g->ray.side == 1 ? set_color_west_east(g, x, y) : NULL;
-			g->ray.side == 0 ? set_color_north_south(g, x, y) : NULL;
+			draw_pixel(g, x, y, color);
 			y++;
 		}
-		x += 0.5;
+		x++;
 	}
-	return (0);
 }

@@ -20,72 +20,25 @@ int				quitwin(void)
 int				key_press(int keycode, t_glob *g)
 {
 	if (keycode == SDLK_LEFT || keycode == SDLK_a)
-		g->p.left = 1;
+		g->game.p.left = 1;
 	if (keycode == SDLK_RIGHT || keycode == SDLK_d)
-		g->p.right = 1;
+		g->game.p.right = 1;
 	if (keycode == SDLK_UP || keycode == SDLK_w)
-		g->p.up = 1;
+		g->game.p.up = 1;
 	if (keycode == SDLK_DOWN || keycode == SDLK_s)
-		g->p.down = 1;
+		g->game.p.down = 1;
 	return (0);
 }
 
 int				key_release(int keycode, t_glob *g)
 {
 	if (keycode == SDLK_LEFT || keycode == SDLK_a)
-		g->p.left = 0;
+		g->game.p.left = 0;
 	if (keycode == SDLK_RIGHT || keycode == SDLK_d)
-		g->p.right = 0;
+		g->game.p.right = 0;
 	if (keycode == SDLK_UP || keycode == SDLK_w)
-		g->p.up = 0;
+		g->game.p.up = 0;
 	if (keycode == SDLK_DOWN || keycode == SDLK_s)
-		g->p.down = 0;
+		g->game.p.down = 0;
 	return (0);
-}
-
-static void		turn(t_glob *g, char dir)
-{
-	double	tmpdir;
-	double	tmpplane;
-	int		coef;
-
-	coef = 1;
-	tmpdir = g->p.dir_x;
-	tmpplane = g->ray.plane_x;
-	if (dir == '1')
-		coef = -1;
-	g->p.dir_x = g->p.dir_x * cos(coef * g->p.r_speed)
-		- g->p.dir_y * sin(coef * g->p.r_speed);
-	g->p.dir_y = tmpdir * sin(coef * g->p.r_speed)
-		+ g->p.dir_y * cos(coef * g->p.r_speed);
-	g->ray.plane_x = g->ray.plane_x * cos(coef * g->p.r_speed)
-		- g->ray.plane_y * sin(coef * g->p.r_speed);
-	g->ray.plane_y = tmpplane * sin(coef * g->p.r_speed)
-		+ g->ray.plane_y * cos(coef * g->p.r_speed);
-}
-
-void			move(t_glob *g)
-{
-	if (g->p.up)
-	{
-		if (!(g->env.map[(int)(g->p.pos_x + g->p.dir_x
-						* g->p.m_speed)][(int)(g->p.pos_y)]))
-			g->p.pos_x += g->p.dir_x * g->p.m_speed;
-		if (!(g->env.map[(int)(g->p.pos_x)][(int)(g->p.pos_y
-						+ g->p.dir_y * g->p.m_speed)]))
-			g->p.pos_y += g->p.dir_y * g->p.m_speed;
-	}
-	if (g->p.left)
-		turn(g, '0');
-	if (g->p.right)
-		turn(g, '1');
-	if (g->p.down)
-	{
-		if (!(g->env.map[(int)(g->p.pos_x - g->p.dir_x
-						* g->p.m_speed)][(int)(g->p.pos_y)]))
-			g->p.pos_x -= g->p.dir_x * g->p.m_speed;
-		if (!(g->env.map[(int)(g->p.pos_x)][(int)(g->p.pos_y
-						- g->p.dir_y * g->p.m_speed)]))
-			g->p.pos_y -= g->p.dir_y * g->p.m_speed;
-	}
 }

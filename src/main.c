@@ -71,18 +71,18 @@ int		main(int argc, char **argv)
 	if (optind < argc)
 	{
 		get_map(&g, argv[optind]);
-		g.p.pos_x = 22;
-		g.p.pos_y = 12;
-		g.p.dir_x = -1;
-		g.p.dir_y = 0;
-		g.ray.plane_x = 0;
-		g.ray.plane_y = 0.60;
-		g.p.m_speed = 0.1;
-		g.p.r_speed = 0.1;
-		g.p.up = 0;
-		g.p.down = 0;
-		g.p.left = 0;
-		g.p.right = 0;
+		g.game.p.pos_x = 22;
+		g.game.p.pos_y = 12;
+		g.game.p.dir_x = -1;
+		g.game.p.dir_y = 0;
+		g.game.ray.plane_x = 0;
+		g.game.ray.plane_y = 0.60;
+		g.game.p.m_speed = 0.1;
+		g.game.p.r_speed = 0.1;
+		g.game.p.up = 0;
+		g.game.p.down = 0;
+		g.game.p.left = 0;
+		g.game.p.right = 0;
 		SDL_Init(SDL_INIT_VIDEO);
 		g.env.win = SDL_CreateWindow("Wolf3D", SDL_WINDOWPOS_UNDEFINED,
 				SDL_WINDOWPOS_UNDEFINED, g.env.win_w, g.env.win_h, SDL_WINDOW_SHOWN);
@@ -95,7 +95,7 @@ int		main(int argc, char **argv)
 		{
 			handle_events(&g, &running);
 			move(&g);
-			loops_hook(&g);
+			render(&g);
 			SDL_UpdateTexture(g.env.tex, NULL, g.env.pixels, g.env.win_w * sizeof(uint32_t));
 			SDL_RenderCopy(g.env.ren, g.env.tex, NULL, NULL);
 			SDL_RenderPresent(g.env.ren);
