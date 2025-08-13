@@ -99,7 +99,7 @@ int		main(int argc, char **argv)
 		g.game.ray.plane_x = 0;
 		g.game.ray.plane_y = 0.60;
 		g.game.p.m_speed = 0.1;
-		g.game.p.r_speed = 0.1;
+		g.game.p.r_speed = 0.035;
 		g.game.p.up = 0;
 		g.game.p.down = 0;
 		g.game.p.left = 0;
