@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "wolf3d.h"
+#include <getopt.h>
 
 void		handle_events(t_glob *g, int *running)
 {
@@ -31,14 +32,45 @@ void		handle_events(t_glob *g, int *running)
 	}
 }
 
+void	parse_args(int argc, char **argv, t_env *env)
+{
+	int opt;
+	static struct option long_options[] = {
+		{"width", required_argument, 0, 'w'},
+		{"height", required_argument, 0, 'h'},
+		{"vsync", no_argument, 0, 'v'},
+		{0, 0, 0, 0}
+	};
+
+	env->win_w = WIN_W;
+	env->win_h = WIN_H;
+	env->vsync = 0;
+	while ((opt = getopt_long(argc, argv, "w:h:v", long_options, NULL)) != -1)
+	{
+		switch (opt)
+		{
+			case 'w':
+				env->win_w = ft_atoi(optarg);
+				break;
+			case 'h':
+				env->win_h = ft_atoi(optarg);
+				break;
+			case 'v':
+				env->vsync = 1;
+				break;
+		}
+	}
+}
+
 int		main(int argc, char **argv)
 {
 	t_glob		g;
 	int		running = 1;
 
-	if (argc == 2)
+	parse_args(argc, argv, &g.env);
+	if (optind < argc)
 	{
-		get_map(&g, argv[1]);
+		get_map(&g, argv[optind]);
 		g.p.pos_x = 22;
 		g.p.pos_y = 12;
 		g.p.dir_x = -1;
@@ -53,17 +85,18 @@ int		main(int argc, char **argv)
 		g.p.right = 0;
 		SDL_Init(SDL_INIT_VIDEO);
 		g.env.win = SDL_CreateWindow("Wolf3D", SDL_WINDOWPOS_UNDEFINED,
-				SDL_WINDOWPOS_UNDEFINED, WIN_W, WIN_H, SDL_WINDOW_SHOWN);
-		g.env.ren = SDL_CreateRenderer(g.env.win, -1, SDL_RENDERER_ACCELERATED);
+				SDL_WINDOWPOS_UNDEFINED, g.env.win_w, g.env.win_h, SDL_WINDOW_SHOWN);
+		g.env.ren = SDL_CreateRenderer(g.env.win, -1,
+				g.env.vsync ? SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC : SDL_RENDERER_ACCELERATED);
 		g.env.tex = SDL_CreateTexture(g.env.ren, SDL_PIXELFORMAT_ARGB8888,
-				SDL_TEXTUREACCESS_STREAMING, WIN_W, WIN_H);
-		g.env.pixels = (uint32_t*)malloc(sizeof(uint32_t) * (WIN_W * WIN_H));
+				SDL_TEXTUREACCESS_STREAMING, g.env.win_w, g.env.win_h);
+		g.env.pixels = (uint32_t*)malloc(sizeof(uint32_t) * (g.env.win_w * g.env.win_h));
 		while (running)
 		{
 			handle_events(&g, &running);
 			move(&g);
 			loops_hook(&g);
-			SDL_UpdateTexture(g.env.tex, NULL, g.env.pixels, WIN_W * sizeof(uint32_t));
+			SDL_UpdateTexture(g.env.tex, NULL, g.env.pixels, g.env.win_w * sizeof(uint32_t));
 			SDL_RenderCopy(g.env.ren, g.env.tex, NULL, NULL);
 			SDL_RenderPresent(g.env.ren);
 		}

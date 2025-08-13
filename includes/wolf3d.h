@@ -99,6 +99,9 @@ typedef struct	s_env
 	SDL_Renderer *ren;
 	SDL_Texture *tex;
 	uint32_t	*pixels;
+	int		win_w;
+	int		win_h;
+	int		vsync;
 	int		**map;
 	int		fd;
 	int		bpp;

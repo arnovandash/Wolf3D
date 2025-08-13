@@ -34,8 +34,8 @@ void		loop_calc_3(t_glob *g)
 	else
 		g->ray.perp_wall_dist = (g->p.map_y - g->ray.ray_pos_y +
 				(1 - g->p.step_y) / 2) / g->ray.ray_dir_y;
-	g->ray.line_height = (int)(WIN_H / g->ray.perp_wall_dist);
-	g->ray.draw_start = -g->ray.line_height / 2 + WIN_H / 2;
+	g->ray.line_height = (int)(g->env.win_h / g->ray.perp_wall_dist);
+	g->ray.draw_start = -g->ray.line_height / 2 + g->env.win_h / 2;
 }
 
 void		loop_calc_2(t_glob *g)
@@ -68,7 +68,7 @@ void		loop_calc_2(t_glob *g)
 
 void		loop_calc_1(t_glob *g, float *x)
 {
-	g->ray.camera_x = 2 * *x / WIN_W - 1;
+	g->ray.camera_x = 2 * *x / g->env.win_w - 1;
 	g->ray.ray_pos_x = g->p.pos_x;
 	g->ray.ray_pos_y = g->p.pos_y;
 	g->ray.ray_dir_x = g->p.dir_x + g->ray.plane_x * g->ray.camera_x;

@@ -14,8 +14,8 @@
 
 void		draw_pixel(t_glob *g, int x, int y, int color)
 {
-	if (x >= 0 && x < WIN_W && y >= 0 && y < WIN_H)
-		g->env.pixels[y * WIN_W + x] = color;
+	if (x >= 0 && x < g->env.win_w && y >= 0 && y < g->env.win_h)
+		g->env.pixels[y * g->env.win_w + x] = color;
 }
 
 void		set_color_west_east(t_glob *g, int x, int y)
@@ -54,8 +54,8 @@ int			loops_hook(t_glob *g)
 	int			y;
 
 	x = 0;
-	ft_memset(g->env.pixels, 0, WIN_W * WIN_H * sizeof(uint32_t));
-	while (x < WIN_W)
+	ft_memset(g->env.pixels, 0, g->env.win_w * g->env.win_h * sizeof(uint32_t));
+	while (x < g->env.win_w)
 	{
 		loop_calc_1(g, &x);
 		loop_calc_2(g);
@@ -63,8 +63,8 @@ int			loops_hook(t_glob *g)
 		{
 			loop_calc_3(g);
 			g->ray.draw_start < 0 ? g->ray.draw_start = 0 : 0;
-			g->ray.draw_end = g->ray.line_height / 2 + WIN_H / 2;
-			g->ray.draw_end >= WIN_H ? g->ray.draw_end = WIN_H - 1 : 0;
+			g->ray.draw_end = g->ray.line_height / 2 + g->env.win_h / 2;
+			g->ray.draw_end >= g->env.win_h ? g->ray.draw_end = g->env.win_h - 1 : 0;
 		}
 		y = g->ray.draw_start;
 		while (y <= g->ray.draw_end)
